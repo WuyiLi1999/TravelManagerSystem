@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboottest.mapper.StudentMapper">
+
+    <insert id="saveStudent" parameterType="com.example.springboottest.domain.req.StudentInsertReq">
+        insert into student (name,`age`,sex,phone,address)
+        value
+            (#{student.name},#{student.age},#{student.sex},ifnull(#{student.phone},""),ifnull(#{student.address},""))
+
+    </insert>
+    <update id="updateStudent" parameterType="com.example.springboottest.domain.req.StudentReq">
+        update student set phone=ifnull(#{req.phone},""),address=ifnull(#{req.address},"") where id=#{req.id}
+    </update>
+    <select id="getStudentList" parameterType="com.example.springboottest.domain.req.StudentReq" resultType="com.example.springboottest.domain.Res.StudentRes">
+        select id,name,age,sex,address,phone
+        from student
+        <where>
+            <if test="req.name!=null and req.name!=''">
+                and name = #{req.name}
+            </if>
+            <if test="req.startAge!=null ">
+                and `age` between #{req.startAge} and #{req.endAge}
+            </if>
+            <if test="req.sex!=null">
+                and sex = #{req.sex}
+            </if>
+        </where>
+    </select>
+    <select id="getStudentById" resultType="com.example.springboottest.domain.Res.StudentRes">
+        select id,name,age,sex,address,phone from student where id=#{id}
+    </select>
+    <select id="getStudentByName" resultType="com.example.springboottest.domain.Res.StudentRes">
+        select id,name,age,sex,address,phone from student where name=#{name}
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+###
+POST http://localhost:8080/student/save
+Content-Type: application/json
+
+{
+  "name": "test_2",
+  "age": 36,
+  "sex": 1,
+  "phone": "15654642303"
+}
+
+###
+POST http://localhost:8080/student/query_by_id
+Content-Type: application/x-www-form-urlencoded
+
+id=4
