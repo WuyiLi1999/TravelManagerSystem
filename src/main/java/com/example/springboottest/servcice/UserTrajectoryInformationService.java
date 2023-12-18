@@ -9,7 +9,7 @@ import com.example.springboottest.domain.req.UserTrajectoryReq;
  */
 public interface UserTrajectoryInformationService {
 
-    int saveTrajectory(UserTrajectory userTrajectory);
+    int batchSaveTrajectory(String url);
 
     IPage<UserTrajectory> getTrajectoryList(UserTrajectoryReq req);
 }

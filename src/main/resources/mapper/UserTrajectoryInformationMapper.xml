@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboottest.mapper.UserTrajectoryInformationMapper">
+
+    <insert id="batchInsertUserTrajectory" parameterType="com.example.springboottest.domain.UserTrajectory">
+        insert into user_trajectory
+            (user_id,in_hour_id,longitude,latitude,city_name,county_name,stay_duration,stay_viewpoint_distance,stay_mall_distance,home_longitude,home_latitude,work_longitude,work_latitude,p_day)
+        values
+        <foreach collection="userTrajectoryList" item="item" index="index" separator=",">
+            (#{item.userId},#{item.inHourId},#{item.longitude},#{item.latitude},#{item.cityName},
+            #{item.countyName},#{item.stayDuration},#{item.stayViewpointDistance},#{item.stayMallDistance},
+             #{item.homeLongitude},#{item.homeLatitude},#{item.workLongitude},#{item.workLatitude},#{item.pDay})
+        </foreach>
+    </insert>
+
+
+</mapper>
