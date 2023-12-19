@@ -7,4 +7,11 @@
         value
             (#{travelPredict.userId},#{travelPredict.flag})
     </insert>
+    <insert id="batchInsertDataToDataBase">
+        insert into predict_result (user_id,flag)
+        values
+        <foreach collection="predictList" item="item" index="index" separator=",">
+            (#{item.userId},#{item.flag})
+        </foreach>
+    </insert>
 </mapper>

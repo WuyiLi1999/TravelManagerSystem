@@ -9,7 +9,10 @@ import com.example.springboottest.mapper.TravelPredictMapper;
 import com.example.springboottest.servcice.TravelPredictService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author lwy
@@ -35,5 +38,11 @@ public class TravelPredictServiceImpl implements TravelPredictService {
         queryWrapper.orderByDesc("flag");
         Page<TravelPredict> page=new Page<>(pageNum,pageSize);
         return travelPredictMapper.selectPage(page,queryWrapper);
+    }
+
+    @Async("taskExecutor")
+    @Override
+    public void batchInsertDataToDataBase(List<TravelPredict> predictList) {
+        travelPredictMapper.batchInsertDataToDataBase(predictList);
     }
 }

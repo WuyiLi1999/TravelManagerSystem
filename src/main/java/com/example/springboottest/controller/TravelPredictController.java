@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.springboottest.domain.ResultInfo;
 import com.example.springboottest.domain.TravelPredict;
 import com.example.springboottest.servcice.TravelPredictService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,15 +33,18 @@ public class TravelPredictController {
      * 加载指定路径的Excel数据到数据库中
      */
     @GetMapping("/loadFileData")
-    public void LoadFileDataToDataBase(@RequestParam(value = "url") String url){
-        try{
-            url="C:\\Users\\Smile\\Desktop\\result_predict.xlsx";
-            Workbook workbook = WorkbookFactory.create(new File(url));
+    public ResultInfo<Boolean> LoadFileDataToDataBase(@RequestParam(value = "url") String url){
+        url="C:\\Users\\Smile\\Desktop\\result_predict.xlsx";
+        try(Workbook workbook = WorkbookFactory.create(new File(url))){
             // 假设数据在第一个sheet
             Sheet sheet = workbook.getSheetAt(0);
             int num=0;
+            List<TravelPredict> predictList=new ArrayList<>();
             for (Row row : sheet) {
                 num++;
+                if(num==1){
+                    continue;
+                }
                 // user_id 列对应的索引为 0
                 Cell userIdCell = row.getCell(0);
                 // flag 列对应的索引为 1
@@ -47,14 +53,18 @@ public class TravelPredictController {
                 String userId = userIdCell.getStringCellValue();
                 String flag = flagCell.getStringCellValue();
                 TravelPredict result=new TravelPredict(userId,flag);
-                // 将 userId 和 flag 数据保存到数据库中
-
-                travelPredictService.saveToDatabase(result);
-
+                predictList.add(result);
+                if (predictList.size()==400){
+                    // 将 userId 和 flag 数据列表保存到数据库
+                    travelPredictService.batchInsertDataToDataBase(predictList);
+                    predictList=new ArrayList<>();
+                }
             }
+            travelPredictService.batchInsertDataToDataBase(predictList);
         }catch (Exception e){
             e.printStackTrace();
         }
+        return ResultInfo.success(true);
     }
 
     @GetMapping("/getPredictList")
