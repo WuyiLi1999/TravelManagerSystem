@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboottest.mapper.UserInformationMapper">
+
+    <insert id="batchInsertUserInformation" parameterType="com.example.springboottest.domain.UserInformation">
+        insert into user_information
+            (user_id,age,sex,city_name,country_name,inner_dur,is_marr,fertile,have_old,have_car,income_level,fir_imel_brand,fir_imel_price)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId},#{item.age},#{item.sex},#{item.cityName},#{item.countryName},#{item.innerDur},#{item.isMarr},
+             #{item.fertile},#{item.haveOld},#{item.haveCar},#{item.incomeLevel},#{item.firImelBrand},#{item.firImelPrice})
+        </foreach>
+    </insert>
+
+
+</mapper>

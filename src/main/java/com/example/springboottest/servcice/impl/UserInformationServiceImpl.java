@@ -7,9 +7,15 @@ import com.example.springboottest.domain.UserInformation;
 import com.example.springboottest.domain.req.UserInformationReq;
 import com.example.springboottest.mapper.UserInformationMapper;
 import com.example.springboottest.servcice.UserInformationService;
+import org.apache.poi.ss.usermodel.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class UserInformationServiceImpl implements UserInformationService {
@@ -19,6 +25,50 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Override
     public int save(UserInformation userInformation) {
         return userInformationMapper.insert(userInformation);
+    }
+
+    @Override
+    @Async("taskExecutor")
+    public int batchInsertUserInformation(String url) {
+        url="C:\\Users\\Smile\\Desktop\\userInformation1.xlsx";
+        int num=0;
+        try{
+            Workbook workbook = WorkbookFactory.create(new File(url));
+            // 假设数据在第一个sheet
+            Sheet sheet = workbook.getSheetAt(0);
+            List<UserInformation> list=new ArrayList<>();
+            for (Row row : sheet) {
+                num++;
+                if (num==1){
+                    continue;
+                }
+                UserInformation userInformation=new UserInformation();
+
+                userInformation.setUserId(row.getCell(0) != null&&row.getCell(0).getCellType()== CellType.STRING?row.getCell(0).getStringCellValue():"");
+                userInformation.setAge(row.getCell(1)!=null&&row.getCell(1).getCellType()==CellType.NUMERIC?(int) row.getCell(1).getNumericCellValue():new Random().nextInt(19)+30);
+                userInformation.setSex(row.getCell(2)!=null&&row.getCell(2).getCellType()==CellType.NUMERIC?(int) row.getCell(2).getNumericCellValue():new Random().nextInt(2));
+                userInformation.setCityName(row.getCell(3)!=null&&row.getCell(3).getCellType()==CellType.STRING? row.getCell(3).getStringCellValue():"");
+                userInformation.setCountryName(row.getCell(4)!=null&&row.getCell(4).getCellType()==CellType.STRING? row.getCell(4).getStringCellValue():"");
+                userInformation.setInnerDur(row.getCell(5)!=null&&row.getCell(5).getCellType()==CellType.NUMERIC?(int) row.getCell(5).getNumericCellValue():new Random().nextInt(2));
+                userInformation.setIsMarr(row.getCell(6)!=null&&row.getCell(6).getCellType()==CellType.NUMERIC?(int) row.getCell(6).getNumericCellValue():new Random().nextInt(2));
+                userInformation.setFertile(row.getCell(7)!=null&&row.getCell(7).getCellType()==CellType.NUMERIC?(int) row.getCell(7).getNumericCellValue():new Random().nextInt(2));
+                userInformation.setHaveOld(row.getCell(8)!=null&&row.getCell(8).getCellType()==CellType.NUMERIC?(int) row.getCell(8).getNumericCellValue():new Random().nextInt(2));
+                userInformation.setHaveCar(row.getCell(9)!=null&&row.getCell(9).getCellType()==CellType.NUMERIC?(int) row.getCell(9).getNumericCellValue():new Random().nextInt(2));
+                userInformation.setIncomeLevel(row.getCell(10)!=null&&row.getCell(10).getCellType()==CellType.NUMERIC?(int) row.getCell(10).getNumericCellValue():new Random().nextInt(2));
+                userInformation.setFirImelBrand(row.getCell(11)!=null&&row.getCell(11).getCellType()==CellType.STRING?row.getCell(11).getStringCellValue():"");
+                userInformation.setFirImelPrice(row.getCell(12)!=null&&row.getCell(12).getCellType()==CellType.NUMERIC?row.getCell(12).getNumericCellValue():0.0);
+                list.add(userInformation);
+                if(list.size()==200){
+                    userInformationMapper.batchInsertUserInformation(list);
+                    list=new ArrayList<>();
+                }
+            }
+
+            userInformationMapper.batchInsertUserInformation(list);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return num;
     }
 
     @Override

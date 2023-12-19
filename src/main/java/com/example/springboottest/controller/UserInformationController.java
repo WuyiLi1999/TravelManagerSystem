@@ -1,24 +1,33 @@
 package com.example.springboottest.controller;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.system.UserInfo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.springboottest.common.DateUtil;
 import com.example.springboottest.domain.Res.StudentRes;
 import com.example.springboottest.domain.ResultInfo;
 import com.example.springboottest.domain.UserInformation;
+import com.example.springboottest.domain.UserTrajectory;
 import com.example.springboottest.domain.req.StudentReq;
 import com.example.springboottest.domain.req.StudentUpdateReq;
 import com.example.springboottest.domain.req.UserInformationReq;
+import com.example.springboottest.mapper.UserInformationMapper;
 import com.example.springboottest.servcice.UserInformationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author lwy
@@ -32,7 +41,7 @@ public class UserInformationController {
     private UserInformationService userInformationService;
 
     @PostMapping("/save")
-    public ResultInfo<Boolean> insertStudent(){
+    public ResultInfo<Boolean> insertUserInformation(){
         String url="D:\\UserInformation.txt";
         int num=0;
         try{
@@ -115,4 +124,9 @@ public class UserInformationController {
     public ResultInfo<StudentRes> getStudentById(@RequestParam(value = "id",required = true) @NotBlank Long id) {
         return null;
     }
+    @GetMapping("/loadDataToDateBase")
+    public void loadUserInformationToDateBase(String url){
+        userInformationService.batchInsertUserInformation(url);
+    }
+
 }
