@@ -9,6 +9,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   application:
     name: travel_predict
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    prefix: classpath:/templates
+    cache: false
 
 region-codes:
   - code: 5711
