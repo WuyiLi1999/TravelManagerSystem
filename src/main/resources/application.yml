@@ -10,4 +10,58 @@ spring:
   application:
     name: travel_predict
 
+region-codes:
+  - code: 5711
+    name: 建德市
+  - code: 571D
+    name: 下沙经济技术开发区
+  - code: 5714
+    name: 富阳区
+  - code: 571C
+    name: 临安区
+  - code: 571B
+    name: 淳安县
+  - code: 5713
+    name: 桐庐县
+  - code: 5718
+    name: 萧山区
+  - code: 5719
+    name: 西湖区
+  - code: 571A
+    name: 上城区
+  - code: 5715
+    name: 滨江区
+  - code: 5792
+    name: 下沙经济技术开发区
+  - code: 5733
+    name: 下城区
+  - code: 5701
+    name: 滨江区
+  - code: 5749
+    name: 下沙经济技术开发区
+  - code: 5779
+    name: 淳安县
+  - code: 5735
+    name: 余杭区
+  - code: 5788
+    name: 临安区
+  - code: 5803
+    name: 桐庐县
+  - code: 5766
+    name: 富阳区
+  - code: 5795
+    name: 萧山区
+  - code: 5731
+    name: 西湖区
+  - code: 5723
+    name: 江干区
+  - code: 5804
+    name: 下沙经济技术开发区
+  - code: 5794
+    name: 淳安县
+  - code: 5706
+    name: 拱墅区
+  - code: 571E
+    name: 下沙经济技术开发区
+
 

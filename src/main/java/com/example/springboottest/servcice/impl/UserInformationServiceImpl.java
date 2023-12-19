@@ -108,7 +108,9 @@ public class UserInformationServiceImpl implements UserInformationService {
             queryWrapper.eq("country_name",req.getCountryName());
         }
         Page<UserInformation> page=new Page<>(req.getPageNum(),req.getPageSize());
-        return userInformationMapper.selectPage(page,queryWrapper);
+        Page<UserInformation> userInformationPage = userInformationMapper.selectPage(page, queryWrapper);
+
+        return userInformationPage;
     }
 
 }
