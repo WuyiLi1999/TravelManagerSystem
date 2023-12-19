@@ -17,23 +17,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author Smile
+ * 用户信息业务层实现
+ */
 @Service
 public class UserInformationServiceImpl implements UserInformationService {
 
     @Resource
     private UserInformationMapper userInformationMapper;
+    /**
+     * 单一加载用户数据
+     * @param userInformation 用户信息
+     * @return
+     */
     @Override
     public int save(UserInformation userInformation) {
         return userInformationMapper.insert(userInformation);
     }
-
+    /**
+     * 批量加载用户数据
+     * @param url 文件路径
+     */
     @Override
     @Async("taskExecutor")
-    public int batchInsertUserInformation(String url) {
+    public void batchInsertUserInformation(String url) {
         url="C:\\Users\\Smile\\Desktop\\userInformation1.xlsx";
         int num=0;
-        try{
-            Workbook workbook = WorkbookFactory.create(new File(url));
+        try(Workbook workbook = WorkbookFactory.create(new File(url))){
             // 假设数据在第一个sheet
             Sheet sheet = workbook.getSheetAt(0);
             List<UserInformation> list=new ArrayList<>();
@@ -68,14 +79,22 @@ public class UserInformationServiceImpl implements UserInformationService {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return num;
     }
-
+    /**
+     * 更新用户数据
+     * @param userInformation
+     * @return
+     */
     @Override
     public int update(UserInformation userInformation) {
         return 0;
     }
 
+    /**
+     * 获取用户信息列表
+     * @param req
+     * @return
+     */
     @Override
     public IPage<UserInformation> getList(UserInformationReq req) {
         QueryWrapper<UserInformation> queryWrapper=new QueryWrapper<>();
