@@ -3,10 +3,8 @@ package com.example.springboottest.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.springboottest.domain.InternetInformation;
 import com.example.springboottest.domain.ResultInfo;
-import com.example.springboottest.domain.TravelPredict;
 import com.example.springboottest.domain.req.InternetInformationReq;
 import com.example.springboottest.servcice.InternetInformationService;
-import com.example.springboottest.servcice.TravelPredictService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import java.io.File;
 
 /**
  * @author Smile
+ * 用户上网信息控制层
  */
 @RestController
 @RequestMapping("/internetInformation")
@@ -74,6 +73,11 @@ public class InternetInformationController {
         }
     }
 
+    /**
+     * 获取用户信息列表
+     * @param req
+     * @return
+     */
     @PostMapping("/getInternetInformationList")
     public ResultInfo<IPage<InternetInformation>> getInternetInformationList(@RequestBody InternetInformationReq req){
         try {
